@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Tarefas</h1>
+        
+        <!-- Formulário de Login -->
+        <div class="login" id="login-form">
+            <input type="text" id="login-username" placeholder="Usuário">
+            <input type="password" id="login-password" placeholder="Senha">
+            <button onclick="login()">Login</button>
+            <p>Não tem uma conta? <a href="#" onclick="showRegisterForm()">Registre-se</a></p>
+        </div>
+
+        <!-- Formulário de Registro -->
+        <div class="register" id="register-form" style="display: none;">
+            <input type="text" id="register-username" placeholder="Usuário">
+            <input type="password" id="register-password" placeholder="Senha">
+            <button onclick="register()">Registrar</button>
+            <p>Já tem uma conta? <a href="#" onclick="showLoginForm()">Faça login</a></p>
+        </div>
+
+        <!-- Área de Inserção de Tarefas -->
+        <div class="task-input" id="task-section" style="display: none;">
+            <input type="text" id="task-title" placeholder="Nova tarefa">
+            <button onclick="addTask()">Adicionar Tarefa</button>
+        </div>
+        
+        <ul id="task-list"></ul>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
