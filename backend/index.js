@@ -8,6 +8,7 @@ const cors = require('cors');
 const redis = require('redis');
 const User = require('./models/User'); 
 
+//print("oi")
 // Conexão com o MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
