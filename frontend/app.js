@@ -16,7 +16,7 @@ async function login() {
         if (response.ok) {
             jwtToken = data.token;
             console.log('Token JWT:', jwtToken); // Exibe o token no console do navegador
-            alert('Login realizado com sucesso!');
+            alert('Login realizado  com sucesso!');
             showTaskSection();
             fetchTasks();  // Carregar as tarefas após o login
         } else {

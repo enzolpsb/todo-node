@@ -8,6 +8,9 @@ const cors = require('cors');
 const redis = require('redis');
 const User = require('./models/User'); 
 
+console.log("Tentando conectar ao MongoDB com URI:");
+console.log(mongoURI);
+
 //print("oi")
 // Conexão com o MongoDB
 mongoose.connect(process.env.MONGO_URI, {
@@ -65,7 +68,9 @@ const authenticate = (req, res, next) => {
 };
 
 // Controlador da rota /tasks
-
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend', 'welcome.html'));
+});
 
 // Rota para login e obtenção do token JWT
 app.post('/register', async (req, res) => {
