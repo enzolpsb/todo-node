@@ -1,7 +1,7 @@
 To-Do List Full-Stack em Node.js
 
 Site hospedado na azure: https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net/#
-        OBS: o site não funcionara em localhost devido ao erro de CORS por estar acessando um backend com HTTPS, para acessar em localhost, siga o passo a passo: 	1.	Gerar Certificados Autoassinados:
+        <br/>OBS: o site não funcionara em localhost devido ao erro de CORS por estar acessando um backend com HTTPS, para acessar em localhost, siga o passo a passo: 	1.	Gerar Certificados Autoassinados:
 No terminal, execute os seguintes comandos para gerar um certificado autoassinado: openssl req -nodes -new -x509 -keyout server.key -out server.cert                      Usar o Certificado Autoassinado no Servidor Express:
 Modifique o seu código backend/index.js para usar o protocolo https:               const fs = require('fs');
 const https = require('https');
