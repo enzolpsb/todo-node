@@ -74,12 +74,12 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
     , e entre em cd todo-node/backend
 
   2.	Crie um arquivo .env na raiz do projeto com as seguintes variáveis de ambiente:             
-    PORT=
-    MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo       
-    REDIS_HOST=seu host redis       
-    REDIS_PASSWORD=seupasswordredis         
-    REDIS_PORT=6380 (no meu caso, com ssl)                
-    JWT_SECRET=sua_chave_secreta
+    <br/>PORT=
+    <br/>MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo       
+    <br/>REDIS_HOST=seu host redis       
+    <br/>REDIS_PASSWORD=seupasswordredis         
+    <br/>REDIS_PORT=6380 (no meu caso, com ssl)                
+    <br/>JWT_SECRET=sua_chave_secreta
 
   4. entre no arquivo auth.js e altere o link apontando para onde está hospedado o seu backend. No meu caso, hospedei na Azure const API_URL = 'https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net';
   5. gere um certificado para poder realizar requisições em HTTPS (no meu caso, é necessario porque meu backend está hospedado na azure) com o comando openssl req -nodes -new -x509 -keyout server.key -out server.cert
