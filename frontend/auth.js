@@ -17,7 +17,7 @@ async function login() {
     const data = await response.json();
     if (response.ok) {
         jwtToken = data.token;
-        console.log('Token JWT:', jwtToken);
+        
         alert('Login realizado com sucesso!');
         showTaskSection();
         fetchTasks();  // Carregar as tarefas após o login
