@@ -1,5 +1,7 @@
 To-Do List Full-Stack em Node.js
 
+Site hospedado na azure: https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net/#
+
 📋 Descrição do Projeto
 
 Este é um projeto completo de aplicação To-Do List desenvolvido em Node.js, que permite aos usuários gerenciar suas tarefas de forma eficiente. A aplicação possui autenticação segura utilizando JWT, persistência de dados com MongoDB, e cache de alta performance com Redis. O objetivo é fornecer uma experiência fluida e responsiva para o gerenciamento de tarefas, com uma interface de usuário desenvolvida em HTML/CSS e integração com JavaScript (AJAX) para comunicação com a API backend.
