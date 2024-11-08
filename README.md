@@ -1,6 +1,7 @@
 To-Do List Full-Stack em Node.js
 
 Site hospedado na azure: https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net/#
+OBS: o site não funcionara em localhost devido ao erro de CORS por estar acessando um backend com HTTPS
 
 📋 Descrição do Projeto
 
