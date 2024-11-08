@@ -1,12 +1,12 @@
 let jwtToken = '';
-
+const API_URL = "https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net";
 // Função de login para obter o token JWT
 async function login() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
 
     try {
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch(`${API_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password }),
@@ -34,7 +34,7 @@ async function register() {
     const password = document.getElementById("register-password").value;
 
     try {
-        const response = await fetch("http://localhost:3000/register", {
+        const response = await fetch(`${API_URL}/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -76,7 +76,7 @@ function showLoginForm() {
 // Função para obter todas as tarefas
 async function fetchTasks() {
     try {
-        const response = await fetch('http://localhost:3000/tasks', {
+        const response = await fetch(`${API_URL}/tasks`, {
             headers: { 'Authorization': `Bearer ${jwtToken}` },
         });
 
@@ -116,7 +116,7 @@ async function addTask() {
     const title = document.getElementById('task-title').value;
 
     try {
-        const response = await fetch('http://localhost:3000/tasks', {
+        const response = await fetch(`${API_URL}/tasks`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -144,7 +144,7 @@ async function toggleTaskStatus(id, currentStatus) {
     const newStatus = currentStatus === 'pendente' ? 'completa' : 'pendente';
 
     try {
-        await fetch(`http://localhost:3000/tasks/${id}`, {
+        await fetch(`${API_URL}/tasks/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ async function toggleTaskStatus(id, currentStatus) {
 // Função para remover uma tarefa
 async function deleteTask(id) {
     try {
-        await fetch(`http://localhost:3000/tasks/${id}`, {
+        await fetch(`${API_URL}/tasks/${id}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${jwtToken}` },
         });
