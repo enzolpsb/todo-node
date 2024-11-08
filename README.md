@@ -42,15 +42,15 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
 
 🚀 Como Executar o Projeto Localmente
 
-	1.	Clone o repositório:
+  1.	Clone o repositório:
     git clone https://github.com/enzolpsb/todo-node.git
     cd todo-node
-	2.	Crie um arquivo .env com as seguintes variáveis de ambiente:
+  2.	Crie um arquivo .env com as seguintes variáveis de ambiente:
     PORT=8182
     MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo
     REDIS_URL=rediss://:<password>@todo-app.redis.cache.windows.net:6380
     JWT_SECRET=sua_chave_secreta
-	3.	Instale as dependências:
+  3.	Instale as dependências:
      npm install
   4.	Execute a aplicação:
      npm start
