@@ -23,7 +23,7 @@ Modifique o seu código backend/index.js para usar o protocolo https:  <br/>cons
 
 
 <br/>3.	Acessar o Frontend em https:
-<br/>Agora, acesse o seu frontend em https://localhost:8182. Note que o navegador pode exibir um aviso sobre o certificado não ser confiável, pois é autoassinado. Nesse caso, basta aceitar o risco para fins de desenvolvimento.
+<br/>Agora, acesse o seu frontend em https://localhost:8185. Note que o navegador pode exibir um aviso sobre o certificado não ser confiável, pois é autoassinado. Nesse caso, basta aceitar o risco para fins de desenvolvimento.
 
 
 
