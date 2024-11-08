@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const redis = require('redis');
 const User = require('./models/User'); 
+const path = require('path');
 
 //print("oi")
 // Conexão com o MongoDB
