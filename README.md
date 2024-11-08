@@ -45,20 +45,23 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
   1.	Clone o repositório:
     git clone https://github.com/enzolpsb/todo-node.git
     , e entre em cd todo-node/backend
-  2.	Crie um arquivo .env com as seguintes variáveis de ambiente:             
-    PORT=8182
+
+  2.	Crie um arquivo .env na raiz do projeto com as seguintes variáveis de ambiente:             
+    PORT=
     MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo       
     REDIS_HOST=seu host redis       
     REDIS_PASSWORD=seupasswordredis         
     REDIS_PORT=6380 (no meu caso, com ssl)                
     JWT_SECRET=sua_chave_secreta
-    
-  4.	Instale as dependências:
+
+  4. entre no arquivo auth.js e altere o link apontando para onde está hospedado o seu backend. No meu caso, hospedei na Azure const API_URL = 'https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net';
+
+  5.	Instale as dependências:
      npm install
-  5.	Execute a aplicação:
+  6.	Execute a aplicação:
      npm start
-  6.	Acesse no navegador:
-    http://localhost:8182
+  7.	Acesse no navegador:
+    https://localhost:PORTAUTILIZADA
 
 
 Próximos Passos
