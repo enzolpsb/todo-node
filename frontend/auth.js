@@ -1,5 +1,7 @@
+
 let jwtToken = '';
-const API_URL = "https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net";
+
+const API_URL = 'https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net';
 
 // Função de login para obter o token JWT
 async function login() {

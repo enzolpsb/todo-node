@@ -1,5 +1,5 @@
 // Importação dos módulos
-require('dotenv').config();
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
@@ -8,6 +8,8 @@ const cors = require('cors');
 const redis = require('redis');
 const User = require('./models/User'); 
 const path = require('path');
+const fs = require('fs');
+const https = require('https');
 
 //print("oi")
 // Conexão com o MongoDB
@@ -74,7 +76,14 @@ const Task = mongoose.model('Task', taskSchema);
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+const options = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+};
 
+https.createServer(options, app).listen(8182, () => {
+    console.log('Servidor rodando em https://localhost:8183');
+});
 // Middleware de autenticação
 const authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
