@@ -55,12 +55,12 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
     JWT_SECRET=sua_chave_secreta
 
   4. entre no arquivo auth.js e altere o link apontando para onde está hospedado o seu backend. No meu caso, hospedei na Azure const API_URL = 'https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net';
-
-  5.	Instale as dependências:
+  5. gere um certificado para poder realizar requisições em HTTPS (no meu caso, é necessario porque meu backend está hospedado na azure) com o comando openssl req -nodes -new -x509 -keyout server.key -out server.cert
+  6.	Instale as dependências:
      npm install
-  6.	Execute a aplicação:
+  7.	Execute a aplicação:
      npm start
-  7.	Acesse no navegador:
+  8.	Acesse no navegador:
     https://localhost:PORTAUTILIZADA
 
 
