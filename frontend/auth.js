@@ -70,79 +70,132 @@ function showTaskSection() {
     document.getElementById('task-section').style.display = 'block';
 }
 
-// Função para obter todas as tarefas
+
+
 async function fetchTasks() {
-    const response = await fetch(`${API_URL}/tasks`, {
-        headers: { 'Authorization': `Bearer ${jwtToken}` },
-    });
+    try {
+        const response = await fetch(`${API_URL}/tasks`, {
+            headers: { 'Authorization': `Bearer ${jwtToken}` },
+        });
 
-    const tasks = await response.json();
-    const taskList = document.getElementById('task-list');
-    taskList.innerHTML = '';
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar tarefas: ${response.status}`);
+        }
 
-    tasks.forEach(task => {
-        const li = document.createElement('li');
-        li.className = task.status === 'completa' ? 'complete' : '';
-        li.innerHTML = `
-            ${task.title}
-            <button onclick="toggleTaskStatus('${task._id}', '${task.status}')">Toggle Status</button>
-            <button onclick="deleteTask('${task._id}')">Delete</button>
-        `;
-        taskList.appendChild(li);
-    });
+        const tasks = await response.json();
+        console.log('Tarefas recebidas:', tasks);
+
+        if (Array.isArray(tasks)) {
+            const taskList = document.getElementById('task-list');
+            taskList.innerHTML = '';
+
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = task.status === 'completa' ? 'complete' : '';
+                li.innerHTML = `
+                    <input type="text" id="edit-title-${task._id}" value="${task.title}" style="display:none;">
+                    <span id="task-title-${task._id}">${task.title}</span>
+                    <button onclick="editTask('${task._id}')">Edit</button>
+                    <button onclick="updateTask('${task._id}')">Save</button>
+                    <button onclick="deleteTask('${task._id}')">Delete</button>
+                `;
+                taskList.appendChild(li);
+            });
+        } else {
+            console.error('A resposta de tasks não é um array:', tasks);
+        }
+    } catch (error) {
+        console.error('Erro ao buscar tarefas:', error);
+        alert('Não foi possível carregar as tarefas.');
+    }
 }
 
 // Função para adicionar nova tarefa
 async function addTask() {
+    console.log('Função addTask chamada'); // Log para verificar se a função foi chamada
     const title = document.getElementById('task-title').value;
 
-    // Verifique se o campo de título não está vazio
-    if (!title) {
-        alert("Por favor, insira uma tarefa.");
-        return;
-    }
-    
+    try {
+        const response = await fetch(`${API_URL}/tasks`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify({ title }),
+        });
 
-    const response = await fetch(`${API_URL}/tasks`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwtToken}`
-        },
-        body: JSON.stringify({ title }),
-    });
-
-    const data = await response.json();
-    if (response.ok) {
-        document.getElementById('task-title').value = ''; // Limpa o campo após adicionar a tarefa
-        fetchTasks(); // Atualiza a lista de tarefas
-    } else {
-        alert('Erro ao adicionar tarefa: ' + data.message);
+        if (response.ok) {
+            console.log('Tarefa adicionada com sucesso');
+            fetchTasks();  // Atualiza a lista de tarefas
+            document.getElementById('task-title').value = '';  // Limpa o campo de entrada
+        } else {
+            const data = await response.json();
+            alert('Erro ao adicionar tarefa: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao adicionar tarefa:', error);
+        alert('Erro ao tentar adicionar tarefa.');
     }
 }
+async function updateTask(taskId) {
+    const newTitle = document.getElementById(`edit-title-${taskId}`).value;
 
+    try {
+        const response = await fetch(`${API_URL}/tasks/${taskId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwtToken}`
+            },
+            body: JSON.stringify({ title: newTitle }),
+        });
+
+        if (response.ok) {
+            alert('Tarefa atualizada com sucesso!');
+            
+            // Atualiza o título da tarefa no frontend imediatamente
+            const titleSpan = document.getElementById(`task-title-${taskId}`);
+            const editInput = document.getElementById(`edit-title-${taskId}`);
+
+            titleSpan.textContent = newTitle;
+            titleSpan.style.display = 'block';
+            editInput.style.display = 'none';
+        } else {
+            const data = await response.json();
+            alert('Erro ao atualizar a tarefa: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Erro ao atualizar a tarefa:', error);
+        alert('Erro ao tentar atualizar a tarefa.');
+    }
+}
 // Função para alternar o status da tarefa
-async function toggleTaskStatus(id, currentStatus) {
-    const newStatus = currentStatus === 'pendente' ? 'completa' : 'pendente';
+function editTask(taskId) {
+    const titleSpan = document.getElementById(`task-title-${taskId}`);
+    const editInput = document.getElementById(`edit-title-${taskId}`);
 
-    await fetch(`${API_URL}/tasks/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${jwtToken}`
-        },
-        body: JSON.stringify({ status: newStatus }),
-    });
-
-    fetchTasks();
+    if (editInput.style.display === 'none') {
+        // Mostrar campo de edição e ocultar o título original
+        editInput.style.display = 'block';
+        titleSpan.style.display = 'none';
+    } else {
+        // Ocultar campo de edição e mostrar o título original
+        editInput.style.display = 'none';
+        titleSpan.style.display = 'block';
+    }
 }
 
 // Função para remover uma tarefa
 async function deleteTask(id) {
-    await fetch(`${API_URL}/tasks/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${jwtToken}` },
-    });
-
-    fetchTasks();
+    try {
+        await fetch(`${API_URL}/tasks/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${jwtToken}` },
+        });
+        fetchTasks();
+    } catch (error) {
+        console.error('Erro ao deletar a tarefa:', error);
+        alert('Erro ao tentar deletar a tarefa.');
+    }
 }

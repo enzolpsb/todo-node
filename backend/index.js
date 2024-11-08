@@ -204,19 +204,20 @@ app.post('/tasks', authenticate, async (req, res) => {
 
 
 // Atualizar o status de uma tarefa
-app.put('/tasks/:id', authenticate, async (req, res) => {
+app.put('/tasks/:id', async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
-    const task = await Task.findOneAndUpdate(
-        { _id: id, userId: req.userId },
-        { status },
-        { new: true }
-    );
-    await ensureRedisConnected();
-    if (!task) return res.status(404).json({ message: 'Tarefa não encontrada' });
+    const { title } = req.body;
 
-    redisClient.del(`tasks:${req.userId}`);  // Limpa o cache
-    res.json(task);
+    try {
+        const updatedTask = await Task.findByIdAndUpdate(id, { title }, { new: true });
+        if (!updatedTask) {
+            return res.status(404).json({ message: 'Tarefa não encontrada.' });
+        }
+        res.json(updatedTask);
+    } catch (error) {
+        console.error('Erro ao atualizar tarefa:', error);
+        res.status(500).json({ message: 'Erro ao atualizar tarefa.' });
+    }
 });
 
 // Remover uma tarefa
