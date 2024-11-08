@@ -8,9 +8,6 @@ const cors = require('cors');
 const redis = require('redis');
 const User = require('./models/User'); 
 
-console.log("Tentando conectar ao MongoDB com URI:");
-console.log(mongoURI);
-
 //print("oi")
 // Conexão com o MongoDB
 mongoose.connect(process.env.MONGO_URI, {
