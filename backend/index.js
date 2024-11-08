@@ -16,21 +16,19 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log('Conectado ao MongoDB'))
   .catch((error) => console.error('Erro ao conectar ao MongoDB:', error));
 
-// Configuração do Redis para cache
+// Configuração do Redis para cache da azure
 const redisClient = redis.createClient({
-    socket: {
-        host: process.env.REDIS_HOST || '127.0.0.1',
-        port: process.env.REDIS_PORT || 6379
-    }
-});
-redisClient.on('error', (error) => console.error('Erro no Redis:', error));
-
-// Conecte o cliente Redis
-redisClient.connect().then(() => {
-    console.log('Redis conectado');
-}).catch((error) => {
-    console.error('Erro ao conectar ao Redis:', error);
-});
+    url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+    password: process.env.REDIS_PASSWORD,
+  });
+  
+  redisClient.on('connect', () => {
+    console.log('Conectado ao Redis com sucesso!');
+  });
+  
+  redisClient.on('error', (err) => {
+    console.error('Erro no Redis:', err);
+  });
 
 // Definição do modelo de Tarefa
 const taskSchema = new mongoose.Schema({
