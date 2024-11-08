@@ -44,7 +44,7 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
 
   1.	Clone o repositório:
     git clone https://github.com/enzolpsb/todo-node.git
-    cd todo-node
+    , e entre em cd todo-node
   2.	Crie um arquivo .env com as seguintes variáveis de ambiente:
     PORT=8182
     MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo
