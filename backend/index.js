@@ -21,15 +21,46 @@ mongoose.connect(process.env.MONGO_URI, {
 const redisClient = redis.createClient({
     url: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
     password: process.env.REDIS_PASSWORD,
-  });
-  
-  redisClient.on('connect', () => {
+    socket: {
+        tls: true,
+        keepAlive: 10000,
+        reconnectStrategy: (retries) => Math.min(retries * 100, 3000) // Retentar a cada 100ms até no máximo 3s
+    }
+});
+
+// Eventos de conexão
+redisClient.on('connect', () => {
     console.log('Conectado ao Redis com sucesso!');
-  });
-  
-  redisClient.on('error', (err) => {
+});
+
+redisClient.on('ready', () => {
+    console.log('Redis está pronto para uso!');
+});
+
+redisClient.on('error', (err) => {
     console.error('Erro no Redis:', err);
-  });
+});
+
+redisClient.on('end', () => {
+    console.log('Conexão com o Redis foi fechada.');
+});
+
+// Função para garantir que o cliente Redis esteja conectado
+async function ensureRedisConnected() {
+    if (!redisClient.isOpen) {
+        try {
+            await redisClient.connect();
+            console.log('Cliente Redis reconectado com sucesso.');
+        } catch (err) {
+            console.error('Erro ao reconectar ao Redis:', err);
+        }
+    }
+}
+
+// Conectar ao Redis ao iniciar
+(async () => {
+    await ensureRedisConnected();
+})();
 
 // Definição do modelo de Tarefa
 const taskSchema = new mongoose.Schema({
@@ -47,8 +78,7 @@ app.use(bodyParser.json());
 // Middleware de autenticação
 const authenticate = (req, res, next) => {
     const token = req.headers['authorization'];
-    console.log("Token recebido:", token); // Log do token recebido
-
+    
     if (!token) {
         console.error("Token não fornecido");
         return res.status(401).json({ message: 'Token não fornecido' });
@@ -57,7 +87,7 @@ const authenticate = (req, res, next) => {
     try {
         const decoded = jwt.verify(token.split(" ")[1], process.env.JWT_SECRET);
         req.userId = decoded.userId;
-        console.log("Token válido, userId:", req.userId);
+        
         next();
     } catch (error) {
         console.error("Erro na verificação do token:", error);
@@ -115,10 +145,11 @@ app.get('/tasks', authenticate, async (req, res) => {
     try {
         const cacheKey = `tasks:${req.userId}`;
         
-        console.log(`Buscando no cache com a chave: ${cacheKey}`);
+        
         
         const data = await redisClient.get(cacheKey);
 
+        await ensureRedisConnected();
         if (data) {
             console.log("Dados encontrados no cache");
             return res.json(JSON.parse(data));
@@ -150,6 +181,9 @@ app.post('/tasks', authenticate, async (req, res) => {
         }
 
         const userId = req.userId;
+
+        await ensureRedisConnected();
+
         const newTask = new Task({ title, userId });
         await newTask.save();
 
@@ -178,7 +212,7 @@ app.put('/tasks/:id', authenticate, async (req, res) => {
         { status },
         { new: true }
     );
-
+    await ensureRedisConnected();
     if (!task) return res.status(404).json({ message: 'Tarefa não encontrada' });
 
     redisClient.del(`tasks:${req.userId}`);  // Limpa o cache
@@ -189,7 +223,7 @@ app.put('/tasks/:id', authenticate, async (req, res) => {
 app.delete('/tasks/:id', authenticate, async (req, res) => {
     const { id } = req.params;
     const task = await Task.findOneAndDelete({ _id: id, userId: req.userId });
-
+    await ensureRedisConnected();
     if (!task) return res.status(404).json({ message: 'Tarefa não encontrada' });
 
     redisClient.del(`tasks:${req.userId}`);  // Limpa o cache

@@ -101,6 +101,7 @@ async function addTask() {
         alert("Por favor, insira uma tarefa.");
         return;
     }
+    
 
     const response = await fetch(`${API_URL}/tasks`, {
         method: 'POST',
