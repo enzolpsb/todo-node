@@ -47,10 +47,10 @@ Antes de rodar a aplicação, certifique-se de ter instalado:
     , e entre em cd todo-node
   2.	Crie um arquivo .env com as seguintes variáveis de ambiente:
     PORT=8182
-    MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo
-    REDIS_HOST=seu host redis
-    REDIS_PASSWORD=seupasswordredis
-    REDIS_PORT=6380 (no meu caso, com ssl)
+    MONGO_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/todo       
+    REDIS_HOST=seu host redis       
+    REDIS_PASSWORD=seupasswordredis         
+    REDIS_PORT=6380 (no meu caso, com ssl)                
     JWT_SECRET=sua_chave_secreta
     
   4.	Instale as dependências:
