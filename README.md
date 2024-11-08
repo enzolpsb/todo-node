@@ -1,7 +1,31 @@
 To-Do List Full-Stack em Node.js
 
 Site hospedado na azure: https://todo-app-frb9b7e6bqcafdct.canadacentral-01.azurewebsites.net/#
-OBS: o site não funcionara em localhost devido ao erro de CORS por estar acessando um backend com HTTPS
+        OBS: o site não funcionara em localhost devido ao erro de CORS por estar acessando um backend com HTTPS, para acessar em localhost, siga o passo a passo: 	1.	Gerar Certificados Autoassinados:
+No terminal, execute os seguintes comandos para gerar um certificado autoassinado: openssl req -nodes -new -x509 -keyout server.key -out server.cert                      Usar o Certificado Autoassinado no Servidor Express:
+Modifique o seu código backend/index.js para usar o protocolo https:               const fs = require('fs');
+const https = require('https');
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+const options = {
+    key: fs.readFileSync('server.key'),
+    cert: fs.readFileSync('server.cert')
+};
+
+https.createServer(options, app).listen(8185, () => {
+    console.log('Servidor rodando em https://localhost:8185');
+});
+
+
+3.	Acessar o Frontend em https:
+Agora, acesse o seu frontend em https://localhost:8182. Note que o navegador pode exibir um aviso sobre o certificado não ser confiável, pois é autoassinado. Nesse caso, basta aceitar o risco para fins de desenvolvimento.
+
+
 
 📋 Descrição do Projeto
 
