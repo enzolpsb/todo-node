@@ -66,8 +66,11 @@ const authenticate = (req, res, next) => {
 };
 
 // Controlador da rota /tasks
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Rota para a página de boas-vindas
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'frontend', 'welcome.html'));
+    res.sendFile(path.resolve(__dirname, '../frontend/welcome.html'));
 });
 
 // Rota para login e obtenção do token JWT
